@@ -97,6 +97,9 @@ export PATH=$PATH:$NDK_HOME
 export GRADLE_HOME=/Users/eranga/Public/installations/gradle
 export PATH=$PATH:$GRADLE_HOME/bin
 
+# set up RabbitMQ server scripts
+export PATH=$PATH:/usr/local/sbin
+
 # fix django locale issue from here on mac
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -109,3 +112,11 @@ alias venv="source /Users/eranga/Public/installations/venv/bin/activate"
 
 # django auto complete
 # . $HOME/.django_bash_completion
+
+# set up maven home 
+#export M2_HOME=/usr/local/Cellar/maven/3.2.3/libexec
+
+# set up boot2docker
+export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_CERT_PATH=/Users/eranga/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1
