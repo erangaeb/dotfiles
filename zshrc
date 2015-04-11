@@ -117,6 +117,72 @@ alias venv="source /Users/eranga/Public/installations/venv/bin/activate"
 #export M2_HOME=/usr/local/Cellar/maven/3.2.3/libexec
 
 # set up boot2docker
-export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_CERT_PATH=/Users/eranga/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=1
+export DOCKER_HOST=tcp://192.168.59.103:2375
+unset DOCKER_TLS_VERIFY
+unset DOCKER_CERT_PATH
+#export DOCKER_CERT_PATH=/Users/eranga/.boot2docker/certs/boot2docker-vm
+#export DOCKER_TLS_VERIFY=1
+
+# jboss home
+export JBOSS4_HOME=/Users/eranga/Public/installations/jboss
+export PATH=$PATH:$JBOSS_HOME/bin
+
+# start jboss, can start in 3 modes
+# 1. normal mode    : start-jboss
+# 2. job mode       : start-jboss job 
+# 3. test mode      : start-jboss test
+# jboss runs on localhost:8080
+start-jboss() {
+     echo "starting jboss..."
+     cd $JBOSS4_HOME/bin
+     if [ $# -ne 1 ]; then
+          echo "running the jboss in normal mode..."
+          sh $JBOSS4_HOME/bin/run.sh
+     fi
+     if [ "$1" = "job" ]; then
+          echo "running the jboss with jobs..."
+          sh $JBOSS4_HOME/bin/run.sh -DrunSingletonScheduler=true -Djava.ejbtest=true -b 0.0.0.0
+     fi
+     if [ $1 = "test" ]; then
+      echo "Running jboss with test profile..."
+          sh $JBOSS4_HOME/bin/run.sh -c st -DrunSingletonScheduler=true -Djava.ejbtest=true
+     fi
+}
+
+# start postgres via boot2docker
+start-postgres() {
+    echo "starting postgres..."
+    boot2docker up
+    docker start postgres
+    echo "postgres started"
+}
+
+# start rabbitmq server via docker
+# server runs on localhost:15672
+start-rabbitmq() {
+    echo "starting rabbitmq..."
+    boot2docker up
+    docker start rabbitmq
+    echo "rabbitmq started"
+}
+
+# deploy 
+#   1. paysol-*.ear
+#   2. paysol-*.jar
+#   3. paysol-security-*.jar
+deploy-paysol() {
+    echo "cleaning default..."
+    rm $JBOSS4_HOME/server/default/deploy/paysol-*.ear
+    rm $JBOSS4_HOME/server/default/deploy/paysol-*.jar
+    rm -rf $JBOSS4_HOME/server/default/work/*
+    rm -rf $JBOSS4_HOME/server/default/tmp/*
+    rm -rf $JBOSS4_HOME/server/default/deploy/tmp.develop/*
+    echo "deploying to default..."
+    cd ~/Workspace/pagero/pagero-online/paysol
+    echo "copying files..."
+    cp ./core/ear/target/paysol-*.ear $JBOSS4_HOME/server/default/deploy
+    cp `find . -name 'paysol-security-*.jar' | grep ./core/ear/target/paysol-ear/lib/` $JBOSS4_HOME/server/default/deploy
+}
+
+# Set java opts to find whats going wrong with jrebel
+export JAVA_OPTS="$JAVA_OPTS -Drebel.log=true"
