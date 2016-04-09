@@ -42,5 +42,8 @@ alias swift=/Applications/Xcode6-Beta2.app/Contents/Developer/Toolchains/XcodeDe
 # enable/venv
 alias venv="source /Users/eranga/Public/installations/venv/bin/activate"
 
+# override system vim
+alias vim="/usr/local/bin/vim"
+
 # django auto complete
 . $HOME/.django_bash_completion

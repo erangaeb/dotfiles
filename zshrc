@@ -5,7 +5,9 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="senzshell"
+#ZSH_THEME="dockerps"
+ZSH_THEME="senzagnoster"
+#ZSH_THEME="the_poncho"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -45,7 +47,7 @@ ZSH_THEME="senzshell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(battery git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -115,6 +117,34 @@ alias venv="source /Users/eranga/Public/installations/venv/bin/activate"
 
 # set up maven home 
 #export M2_HOME=/usr/local/Cellar/maven/3.2.3/libexec
+
+# Colorize maven
+alias maven="/usr/local/bin/mvn"
+alias mvn="colorize_maven"
+
+colorize_maven() {
+  local BOLD=`tput bold`
+  local TEXT_RED=`tput setaf 1`
+  local TEXT_GREEN=`tput setaf 2`
+  local TEXT_YELLOW=`tput setaf 3`
+  local RESET_FORMATTING=`tput sgr0`
+
+  maven $@ | sed -e "s/\(\[INFO\]\ \-\-\-\ .*\)/${TEXT_BLUE}\1${RESET_FORMATTING}/g" \
+    -e "s/\(\[INFO\]\ \[.*\)/${RESET_FORMATTING}\1${RESET_FORMATTING}/g" \
+    -e "s/\(\[INFO\]\ \)\(BUILD SUCCESS\)/\1${TEXT_GREEN}\2${RESET_FORMATTING}/g" \
+    -e "s/\(\[INFO\]\ \)\(BUILD FAILURE\)/\1${TEXT_RED}\2${RESET_FORMATTING}/g" \
+    -e "s/\(\[WARNING\].*\)/${TEXT_YELLOW}\1${RESET_FORMATTING}/g" \
+    -e "s/\(\[ERROR\]\)/${TEXT_RED}\1${RESET_FORMATTING}/g" \
+    -e "s/\(Failed tests: \)/${TEXT_RED}\1${RESET_FORMATTING}/g" \
+    -e "s/\(Exception in thread \".*\" \)\(.*\)/\1${TEXT_RED}\2${RESET_FORMATTING}/g" \
+    -e "s/\(SUCCESS \)\[/${RESET_FORMATTING}${TEXT_GREEN}\1${RESET_FORMATTING}\[/g" \
+    -e "s/\(FAILURE \)\[/${RESET_FORMATTING}${TEXT_RED}\1${RESET_FORMATTING}\[/g" \
+    -e "s/\(Caused by: \)\([^:\t ]*\)/\1${TEXT_RED}\2${RESET_FORMATTING}/g" \
+    -e "s/\(ERROR\ \[.*\)/${TEXT_RED}\1${RESET_FORMATTING}/g" \
+    -e "s/Tests run: \([^,]*\), Failures: \([^,0]*\), Errors: \([^,]*\), Skipped: \([^,]*\)/${TEXT_GREEN}Tests run: \1${RESET_FORMATTING}, Failures: ${TEXT_RED}\2${RESET_FORMATTING}, Errors: ${TEXT_RED}\3${RESET_FORMATTING}, Skipped: ${TEXT_YELLOW}\4${RESET_FORMATTING}/g"
+
+  echo -ne ${RESET_FORMATTING}
+}
 
 # set up boot2docker
 export DOCKER_HOST=tcp://192.168.59.103:2375
