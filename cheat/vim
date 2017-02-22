@@ -1,0 +1,55 @@
+# <ctrl> p plugin
+<ctrl> p                        Open all files and filter
+<ctrl> h, j, k, l               Move to left, Up, Down, Right split
+<ctrl> x                        Open file in vertical split
+<ctrl> v                        Open file in horizontal split
+<ctrl> t                        Open file in new tab
+
+
+# NERD tree pulugin
+<ctrl> b                        NERD Tree
+t                               Open file in new tab
+ladder (,) n                    Move to left tab
+ladder (,) m                    Move to right tab 
+m                               Add/ Move/ Delete/ Copy current node
+
+
+# Movements
+h, j, k, l                      Left, Down, Top, Right
+e                               Word end
+b                               Work beginning
+gg                              First line 
+nG (39G)                        Move to line n (line 39)
+H, M, L                         First, Middle, Last line on screen
+<ctrl> o                        Move to previous cursor position (like undo)
+<ctrl> i                        Move to next cursor position (like redo)
+
+
+# Edit
+cw, dw                          Change, Delete word
+dd                              Delete current line
+D, d0                           Delete cursor to end, beginning of line
+x, s, r                         Delete, Change, Replace current character
+SHIFT X                         Delete character before cursor (like backspace)
+SHIFT J                         Append next line to end of current line
+SHIFT A, I                      Insert end, beginning of line
+SHIFT O                         Insert line above
+o                               Insert line below
+u, <ctrl> r                     Undo, Redo
+<fn> F2 (F2)                    Insert paste (use when paste a code block)
+y, p                            Yank, Paste
+
+
+# Selection
+v                               Visual (use h, j, k, l to select)
+SHIFT V                         Visual line (use j, k to select up and down lines)
+<ctrl> v                        Horizontal/Visual block (use h, j, k, l to select block)
+SHIFT >                         Move selected block to right
+SHIFT <                         Move select blocked to left
+SHIFT V G                       Select whole file (G goes to end of file)
+
+
+# Search
+/                               Search
+n                               Next match
+SHIFT N                         Previous match
