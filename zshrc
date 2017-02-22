@@ -47,7 +47,7 @@ ZSH_THEME="senzagnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(battery git)
+plugins=(battery git docker)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -92,7 +92,9 @@ export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # set up andoird NDK
-export NDK_HOME=/Users/eranga/Public/installations/android-ndk
+#export NDK_HOME=/Users/eranga/Public/installations/android-ndk
+export NDK_ROOT=/Users/eranga/Public/installations/android-ndk-r13b
+export NDK_HOME=/Users/eranga/Public/installations/android-ndk-r13b
 export PATH=$PATH:$NDK_HOME
 
 # setup gradle home
@@ -155,3 +157,10 @@ unset DOCKER_CERT_PATH
 
 # Set java opts to find whats going wrong with jrebel
 export JAVA_OPTS="$JAVA_OPTS -Drebel.log=true"
+
+# github token for homebrew
+export HOMEBREW_GITHUB_API_TOKEN=066e3efadd9ff53f84a85957def2d7ef1c85c698
+
+# cheat 
+export CHEATCOLORS=true
+export EDITOR=vim 

@@ -19,4 +19,8 @@
 
     ln -s ~/.dotfiles/senzagnoster.zsh-theme ~/.oh-my-zsh/themes/senzagnoster.zsh-theme
 
+## cheat 
+    
+    ln -s ~/.dotfiles/cheat ~/.cheat
+
 ---
