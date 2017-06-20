@@ -1,5 +1,5 @@
 ---
-#Installation
+# Installation
     
     git clone https://github.com/erangaeb/dotfiles.git ~/.dotfiles
 
