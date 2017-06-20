@@ -5,17 +5,17 @@
 
 ---
 
-#Symlinks
+# Symlinks
 
-##config files
+## config files
     ln -s ~/.dotfiles/zshrc ~/.zshrc
     ln -s ~/.dotfiles/bash_profile ~/.bash_profile
 
-##django 
+## django 
 
     ln -s ~/.dotfiles/django_bash_completion ~/.django_bash_completion
 
-##oh-my-zsh 
+## oh-my-zsh 
 
     ln -s ~/.dotfiles/senzagnoster.zsh-theme ~/.oh-my-zsh/themes/senzagnoster.zsh-theme
 
