@@ -148,13 +148,6 @@ colorize_maven() {
   echo -ne ${RESET_FORMATTING}
 }
 
-# set up boot2docker
-export DOCKER_HOST=tcp://192.168.59.103:2375
-unset DOCKER_TLS_VERIFY
-unset DOCKER_CERT_PATH
-#export DOCKER_CERT_PATH=/Users/eranga/.boot2docker/certs/boot2docker-vm
-#export DOCKER_TLS_VERIFY=1
-
 # Set java opts to find whats going wrong with jrebel
 export JAVA_OPTS="$JAVA_OPTS -Drebel.log=true"
 
@@ -164,3 +157,12 @@ export HOMEBREW_GITHUB_API_TOKEN=066e3efadd9ff53f84a85957def2d7ef1c85c698
 # cheat 
 export CHEATCOLORS=true
 export EDITOR=vim 
+
+# start docker machine
+DOCKER_MACHINE="default"
+if docker-machine status $DOCKER_MACHINE | grep "Running" &> /dev/null
+  then
+    eval "$(docker-machine env $DOCKER_MACHINE)"
+  else
+    docker-machine start $DOCKER_MACHINE && eval "$(docker-machine env $DOCKER_MACHINE)"
+fi
