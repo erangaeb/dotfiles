@@ -28,6 +28,8 @@
 CURRENT_BG='NONE'
 SEGMENT_SEPARATOR=''
 NEW_LINE='❯❯'
+LAMBDA='λ'
+LAMBDA_='𝝺'
 
 # Begin a segment
 # Takes two arguments, background and foreground. Both can be omitted,
@@ -62,7 +64,7 @@ prompt_end() {
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER@%m"
+    prompt_segment black default "%(!.%{%F{yellow}%}.)$LAMBDA$USER@%m"
   fi
 }
 
