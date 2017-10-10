@@ -116,12 +116,3 @@ export EDITOR=vim
 # pagero service dirs
 export SERVICES_LOG_DIRECTORY=/private/var/log/services/
 export SERVICES_DIRECTORY=/private/var/services/
-
-# start docker machine
-#DOCKER_MACHINE="default"
-#if docker-machine status $DOCKER_MACHINE | grep "Running" &> /dev/null
-#  then
-#    eval "$(docker-machine env $DOCKER_MACHINE)"
-#  else
-#    docker-machine start $DOCKER_MACHINE && eval "$(docker-machine env $DOCKER_MACHINE)"
-#fi
