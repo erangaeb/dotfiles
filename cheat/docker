@@ -29,6 +29,8 @@ Start container                     docker start <container-id>
 
 Stop container                      docker stop <container-id>
 
+Stop all containers                 docker stop $(docker ps -a -q)
+
 Restart container                   docker restart <container-id>
 
 List running container              docker ps
