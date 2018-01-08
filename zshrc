@@ -116,3 +116,9 @@ export EDITOR=vim
 # pagero service dirs
 export SERVICES_LOG_DIRECTORY=/private/var/log/services/
 export SERVICES_DIRECTORY=/private/var/services/
+
+# golang
+export GOROOT=/usr/local/opt/go/libexec
+export GOPATH=$HOME/.go
+export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOPATH/bin
