@@ -1,0 +1,35 @@
+# To create a 2048-bit private key:
+openssl genrsa -out server.key 2048
+
+# To create the Certificate Signing Request (CSR):
+openssl req -new -key server.key -out server.csr
+
+# To sign a certificate using a private key and CSR:
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+# (The above commands may be run in sequence to generate a self-signed SSL certificate.)
+
+# To show certificate information for a certificate signing request
+openssl req -text -noout -in server.csr
+
+# To show certificate information for generated certificate
+openssl x509 -text -noout -in server.crt 
+
+# To view certificate expiration:
+echo | openssl s_client -connect <hostname>:443 2> /dev/null | \
+awk '/-----BEGIN/,/END CERTIFICATE-----/' | \
+openssl x509 -noout -enddate
+
+# Generate Diffie-Hellman parameters:
+openssl dhparam -outform PEM -out dhparams.pem 2048
+
+# View public key certificate information
+openssl x509 -noout -text -in server.crt
+
+# View private key information
+openssl rsa -noout -text -in server.key
+
+# Verify prinvate key matches to certificate
+# Compare the output(md5 hash) of below two commands, they should same if keys are matching
+openssl x509 -noout -modulus -in server.crt | openssl md5
+openssl rsa -noout -modulus -in server.key | openssl md5

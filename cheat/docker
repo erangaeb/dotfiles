@@ -39,6 +39,9 @@ List all containers                 docker ps -a
 
 Container logs                      docker logs <container-id>
 
+Tail container logs                 docker logs -f --tail 0 <container-id>
+                                    docker logs -f --tail 0 7d
+
 Login/connect to container          docker exec -it <container-id> bash
 
 Delete container                    docker rm <container-id> or docker rm -f <container-id>

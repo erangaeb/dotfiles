@@ -1,0 +1,14 @@
+# List all keys in truststore with limited inforamtion
+keytool -list -keystore server.truststore
+
+# List all keys in truststore with detailed information
+keytool -list -v -keystore server.truststore
+
+# View specific key
+keytool -list -v -keystore server.truststore -alias pay2n
+
+# Delete key
+keytool -delete -keystore server.truststore -alias 'pay2n'
+
+# Import key
+keytool -import -v -alias pay2n -file pay2n.crt -keystore server.truststore
