@@ -53,6 +53,9 @@ Delete stopped/exited containers    docker rm $(docker ps -a | grep Exited | awk
 copy files container to host        docker cp <container-id>:<containers path> <host path> 
                                     docker cp 34fe3333:/opt/docker/lam.txt . 
 
+find process id of container        docker inspect -f '{{.State.Pid}}' <container id>
+
+
 
 # Docker logs
 

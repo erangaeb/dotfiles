@@ -33,3 +33,8 @@ openssl rsa -noout -text -in server.key
 # Compare the output(md5 hash) of below two commands, they should same if keys are matching
 openssl x509 -noout -modulus -in server.crt | openssl md5
 openssl rsa -noout -modulus -in server.key | openssl md5
+
+# Get public key certificate of server
+openssl s_client -connect <host>:<port>
+openssl s_client -showcerts -connect <host>:<port>
+openssl s_client -showcerts -connect rahasak.com:443
