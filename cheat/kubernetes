@@ -1,0 +1,58 @@
+# list all pods
+kubectl get pods
+
+# pods with more info 
+kubectl get pods -o wide
+
+# list all pods in all namespaces
+kubectl get pods --all-namespaces
+
+# describe pod
+kubectl describe pods <pod name>
+kubectl describe pods zookeeper1
+
+# connect to running pod
+kubectl exec -it <pod name> bash
+kubectl exec -it blockchain-org1peer1-8b5bdc947-xhqk7 bash
+
+# view pod logs
+kubectl logs <podname>
+kubectl logs zookeeper1
+
+# scale deployment define in yml
+kubectl scale --replicas=3 <yml file name> 
+kubectl scale --replicas=3 promize.yaml
+
+# delete pods
+kubectl delete -f <pod definition yaml>
+kubectl delete -f kafk-deployment.yaml 
+
+# delte all evicted pods
+kubectl delete pods --field-selector=status.phase!=Running
+
+---
+
+# list services
+kubctl get services
+
+# delete service
+kubectl delete -f <service definition yaml>
+kubectl delete -f zk-service.yaml 
+
+---
+
+# delete replicationcontroller
+kubectl delete rc <name>
+kubectl delete rc <zookeeper1>
+
+---
+
+# cluster info/master node info
+kubectl cluster-info
+
+# list cluster nodes
+kubectl get nodes
+
+# describe nodes
+kubectl describe nodes <node name>
+kubectl describe nodes ip-172-31-25-198
