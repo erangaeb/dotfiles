@@ -1,0 +1,76 @@
+# 3d-print
+
+## url
+https://782226320855.signin.aws.amazon.com/console
+
+## username/password
+NgWeeKeong
+MNc7ITn)nTqf
+
+## hlf/ks8
+ks8-master              54.169.145.91           large
+ks8-1                   54.255.224.182          medium
+ks8-2                   54.179.131.227          medium
+ks8-3                   13.229.99.212           medium
+
+## 3dprint
+cassandra-1             13.229.206.252          medium
+kafka                   54.169.199.1            medium
+ops                     13.250.38.208           medium
+amcchain                54.169.37.0             micro
+oemchain                54.169.190.255          micro
+
+## cassandra test/piysara
+cassandra-seed          52.221.227.17           x-large
+cassandra-replica1      52.221.179.139          x-large
+cassandra-replica1      13.250.47.53            x-large
+ubunutu16               18.136.200.171          xx-large / 32gb
+ubunut 14               52.221.246.187          x-large / 16gb
+piyasara                13.229.209.27           large/ 8gb
+hora                    13.250.110.40           large/ 8gb
+
+
+
+# sentara
+
+## ssh username/password
+ssh blockchainadmin@40.76.217.72
+B64r.m4erz}+pBxL
+
+## servers
+10.15.0.6               40.76.217.72            netflower, redis
+10.15.0.7               13.68.200.250           elassandra,kibana,storage
+10.15.0.8               40.117.178.63           kafka1
+10.15.0.9               138.91.114.18           kafka2
+10.15.0.10              138.91.121.92           hlf
+10.15.0.11              40.114.86.67            registrar,api,web
+10.15.0.12              104.41.143.180          execer 1,2,3
+10.15.0.13              13.68.223.3             kafka3
+
+
+
+# creative
+
+## ssh/password
+ssh Lekhana@10.1.0.5
+L3khana@blockch@!n
+
+## servers
+10.1.0.6                13.82.105.230           mysql/web
+10.1.0.5                137.135.101.205         switch/web
+10.1.0.4                137.117.37.159          mystiko/notifier
+
+
+
+# sdb
+
+## ssh/password
+ssh senz@10.100.32.58
+SDB@@##123
+
+## servers
+10.100.31.58            Old services
+10.100.32.56            Mysql/Mongodb
+10.100.32.57            Switch/Trans/Inq
+10.100.32.58            Web/Dashboard
+10.100.32.59            Elastic/Kibana

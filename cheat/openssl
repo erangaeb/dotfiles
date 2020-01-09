@@ -38,3 +38,13 @@ openssl rsa -noout -modulus -in server.key | openssl md5
 openssl s_client -connect <host>:<port>
 openssl s_client -showcerts -connect <host>:<port>
 openssl s_client -showcerts -connect rahasak.com:443
+openssl s_client -showcerts -connect sampath.lk:443 </dev/null 2>/dev/null|openssl x509 -outform PEM >mycertfile.pem
+
+# Get public key from certificate
+openssl x509 -in mycertfile.pem -pubkey -noout > public.pem
+
+# View public key info
+openssl rsa -inform PEM -pubin -in pub.key -text -noout
+
+#get sha2 hash of publickey
+openssl rsa -in pubkey.pem -pubin -outform der | openssl dgst -sha256

@@ -1,0 +1,35 @@
+# android
+- create a project or use existing project in https://console.firebase.google.com
+- go to add app and choose android 
+- fill package name, debug certificate, prodution certificate 
+- download google-services.json and put into android project
+
+
+# ios
+- create a project or use existing project in https://console.firebase.google.com
+- go to add app and choose ios
+- fill bundle id
+- goto cloud messaging and add APNs autntication key
+- set KeyId, TemId and browse the cerficiate file(debug/prod)
+- download GoogleServices-info.plist and put into ios project
+
+
+# firebase projects
+- score (used for android/ios apps for igift)
+- rahasak (used for android/ios apps for mbsl, boc etc)
+
+
+# test message android
+curl -X POST \
+--header "Content-Type: application/json" \
+--header "Authorization: key=AAAAL664TjA:APA91bFpr7Gb4IUoTVlwBE34Y22l86JrQsim9-k3KV0eFmZVmJSmz7TE4HEpwWKGSOiHeNtIo-2nw0fCudzcjdoQL6o7NUBRFTDLDNkjG66enkm75xZ_Ow3eC0BqmaFWq5gQ0tfNyUiV" \
+--data "{\"to\":\"fcfWOkea26I:APA91bG_uyPknCeBrc84A1FgzXXR_Z5Q9Bsu2q5GOXMEOaFHP7dBC4Nut4jcb0aJ5cMKl6bWEhrWtKDodzbSTd5lE4XuEpYv6hIfjQHCfQIfWUzEamw3_mzjkwvBcdfP8DpaxLUnBv6q\",\"data\":{\"data\":\"SHARE #LAT #LON @eranga ^switch digisg\"}}" \
+https://fcm.googleapis.com/fcm/send
+
+
+# test message ios
+curl -X POST \
+--header "Content-Type: application/json" \
+--header "Authorization: key=AAAAL664TjA:APA91bFpr7Gb4IUoTVlwBE34Y22l86JrQsim9-k3KV0eFmZVmJSmz7TE4HEpwWKGSOiHeNtIo-2nw0fCudzcjdoQL6o7NUBRFTDLDNkjG66enkm75xZ_Ow3eC0BqmaFWq5gQ0tfNyUiV" \
+--data "{\"to\":\"cDq7DaMKIhg:APA91bH7xDbtDypTajmBBO3Qb_AB3mwuFmJBAWKMvS_1KCAgT9fupABSHe9QnBXCPR2BKGFAFOutJLuuNiZr0NPEDS7awbqNni_VqAKawIUikOhNgFo0PyHpR0U21M1TjGIUqp-WUWna\",\"content_available\":true,\"notification\":{\"title\":\"New Document\",\"documentId\":\"3422323\", \"body\": \"New document received to sign\"}}" \
+https://fcm.googleapis.com/fcm/send

@@ -1,0 +1,183 @@
+# deploy hlf cluster 
+
+this setup is based on `kafka-one-org` project. following is the network structure
+
+```
+1. one org (org1)
+2. two peers (peer0.org1.example.com)
+3. one ca
+4. three oreders with kafka 
+```
+
+
+# setup configs
+
+1. setup path and fabric-config path
+
+PATH need to have bin directory content and fabric-config need to have `crypto-config.yaml`
+and `configtx.yaml`
+
+```
+export PATH=${PWD}/bin:${PWD}:$PATH
+export FABRIC_CFG_PATH=${PWD}/network-config
+```
+
+2. generate crypto
+
+```
+cryptogen generate --config=./network-config/crypto-config.yaml
+```
+
+3. generate genesis block for orderer
+
+```
+configtxgen -profile OneOrgsOrdererGenesis -outputBlock ./config/orderer.block
+```
+
+4. generate channel configuration transaction
+
+```
+configtxgen -profile OneOrgsChannel -outputCreateChannelTx ./config/channel.tx -channelID mychannel
+```
+
+5. generate anchor peer transaction for org1, if there are mutiple orgs, need to 
+this step for all orgs(ex org1, org2 etc)
+
+```
+configtxgen -profile OneOrgsChannel -outputAnchorPeersUpdate ./config/Org1MSPanchors.tx -channelID mychannel -asOrg Org1MSP
+```
+
+
+# add ca certificate details to docker compose 
+
+
+before start the services with docker compose, we need to add the CA certificate
+configs which generated via cryptogen to docker compose ca.example.com service. 
+
+```
+# defines certificate autorities ca file, this file generates by cryptogen 
+- FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
+
+# defines certificate authorities key file, this files generates by cryptogen 
+- FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/73c0730c0661b906fd6e266407e7a1d0f40b26ab1d5e3ea3155bb6e82688188a_sk
+```
+
+
+# start network
+
+```
+docker-compose -f <compose-file> up -d
+docker-compose -f <cli> up -d
+```
+
+
+# create channel
+
+```
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel create -o orderer0.example.com:7050 -c mychannel -f /var/hyperledger/configs/channel.tx
+```
+
+
+# join peers to channel (all peers)
+
+1. join peer0.org1.example.com to the channel
+
+```
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/Admin@org1.example.com/msp" peer0.org1.example.com peer channel join -b mychannel.block
+```
+
+2. copy mychannel.block to peer1
+
+when creating channel with peero.org1.example.com, it generates `mychanell.block` 
+file inside peer0.org1.example.com container, we need to copy that file into 
+`peer1.org1.example.com` container inorder to peer1 to join the channel. use `docker cp` 
+for it
+
+```
+docker cp peer0.org1.example.com:/mychannel.block .
+docker cp mychannel.block peer1.org1.example.com:/mychannel.block
+```
+
+if you use cli container to create channel and join peers, you don't need to copy
+the files - https://hyperledger-fabric.readthedocs.io/en/stable/install_instantiate.html
+
+3. join peer1.org1.example.com to channel
+
+```
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/var/hyperledger/users/Admin@org1.example.com/msp" peer1.org1.example.com peer channel join -b mychannel.block
+```
+
+
+# install chaincode (in all peers)
+
+1. peer0 (connect cli to peer0)
+
+```
+docker exec -it cli peer chaincode install -n mycc -p github.com/chaincode -v v0
+```
+
+2. peer1 (connect cli to peer1)
+
+```
+docker exec -it cli peer chaincode install -n mycc -p github.com/chaincode -v v0
+```
+
+
+# instatiate chaincode (on channel)
+
+```
+docker exec -it cli peer chaincode instantiate -o orderer0.example.com:7050 -C mychannel -n mycc github.com/chaincode -v v0 -c '{"Args": ["a", "100"]}'
+```
+
+
+# query
+
+```
+docker exec -it cli peer chaincode invoke -o orderer0.example.com:7050 -n mycc -c '{"Args":["set", "a", "20"]}' -C mychannel
+docker exec -it cli peer chaincode query -n mycc -c '{"Args":["query","a"]}' -C mychannel
+```
+
+
+# test cheain code
+
+1. deploy docker
+
+```
+cd chaincode-docker-devmode
+docker-compose -f docker-compose-simple.yaml up -d
+```
+
+2. from chaincode container
+
+```
+# connect
+docker exec -it chaincode bash
+
+# build contract
+go build -o rahasak
+
+# run contract
+CORE_PEER_ADDRESS=peer:7052 CORE_CHAINCODE_ID_NAME=rahasak5:0 ./rahasak
+```
+
+3. from cli container
+
+```
+# connect
+docker exec -it cli bash
+
+# install
+peer chaincode install -p chaincodedev/chaincode/rahasak -n rahasak5 -v 0
+
+# instantiate
+peer chaincode instantiate -n rahasak5 -v 0 -c '{"Args":[]}' -C myc
+
+# invoke - chaincode can modify the state of the variables in ledger. Each 'Invoke'
+# transaction will be added to the 'block' in the ledge (update ledger state)
+peer chaincode invoke -n rahasak5 -c '{"Args":["create", "001", "eranga", "e@gmail.com"]}' -C myc
+
+# query - chain code will read the current state and send it back to user. This
+# transaction is not saved in blockchain (not update ledger state)
+peer chaincode query -n rahasak5 -c '{"Args":["get", "001"]}' -C myc
+peer chaincode query -n rahasak5 -c '{"Args":["search", "001", "005"]}' -C myc
+```

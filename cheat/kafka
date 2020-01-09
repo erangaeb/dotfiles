@@ -1,0 +1,71 @@
+# run zookeeper
+docker run -d \
+--name zookeeper \
+-p 2181:2181 \
+erangaeb/zookeeper:1.0
+
+# run kafka
+docker run -d \
+--name kafka \
+-p 7203:7203 \
+-p 9092:9092 \
+-e KAFKA_ADVERTISED_HOST_NAME=10.4.1.29 \
+-e ZOOKEEPER_IP=10.4.1.29 \
+erangaeb/kafka:1.0
+
+# create topic(with parition and replication)
+docker run \
+--rm erangaeb/kafka:1.0 kafka-topics.sh \
+--create \
+--topic execer \
+--replication-factor 1 \
+--partitions 3 \
+--zookeeper localhost:12181
+
+# delete topic
+docker run \
+--rm erangaeb/kafka:1.0 kafka-topics.sh \
+--delete \
+--topic parser \
+--zookeeper 10.252.94.61:12181
+
+---
+
+# install kafkacat linux
+sudo apt-get install kafkacat
+
+# install kafkacat macos
+brew install kafkacat
+
+# list topics
+kafkacat -L -b 172.31.25.198:9092
+
+# publisher to topic
+kafkacat -P -b 172.31.25.198:9092 -t rahasak
+
+# consumer to topic(all paritions)
+kafkacat -C -b 172.31.25.198:9092 -t rahasak
+
+# consumer to topic(given parition)
+kafkacat -C -b 172.31.25.198:9092 -t rahasak -p 0
+kafkacat -C -b 172.31.25.198:9092 -t rahasak -p 1
+
+---
+
+# message delete
+    https://stackoverflow.com/questions/28586008/delete-message-after-consuming-it-in-kafka
+
+    Purging of messages in Kafka is done automatically by either specifying a
+    retention time for a topic or by defining a disk quota for it so for your
+    case of one 5GB file, this file will be deleted after the retention period
+    you define has passed, regardless of if it has been consumed or not. default
+    config is below
+
+    log.retention.hours=168
+
+# broadcase message
+    https://stackoverflow.com/questions/35561110/can-multiple-kafka-consumers-read-same-message-from-the-partition
+
+    consumers in differnt consumer groups read all messages in a topic. If you
+    have two Kafka consumers with different Group Id both consumers will read
+    the exact same set of messages independently

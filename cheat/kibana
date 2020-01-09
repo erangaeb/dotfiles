@@ -1,0 +1,8 @@
+# search
+src_mac: 50\:65\:f3\:47\:00\:ad
+
+src_mac: 50\:65\:f3*
+
+src_mac: 50\:65\:f3* AND company_id: ERROR
+
+src_mac: 50\:65\:f3* AND company_id: ER*

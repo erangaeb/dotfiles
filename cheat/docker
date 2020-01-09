@@ -1,72 +1,105 @@
-# Images
-List images                         docker images
+# images
 
-Delete image                        docker rmi <image id> or docker rmi -f <image-id>
+## list images
+docker images
 
-Delete image with tag               docker rmi <image-name>:<tag>        
-                                    docker rmi rabbitmq:0.7
+## delete image                        
+docker rmi <image id> or docker rmi -f <image-id>
 
-Delete all images                   docker rmi $(docker images -q)
+## delete image with tag               
+docker rmi <image-name>:<tag>        
+docker rmi rabbitmq:0.7
 
-Delete dangling images              docker rmi $(docker images -f dangling=true -q)
+## delete all images                   
+docker rmi $(docker images -q)
 
-Delete all unused images            docker rmi $(docker ps -q) 
-                                    docker images -q |xargs docker rmi
+## delete dangling images              
+docker rmi $(docker images -f dangling=true -q)
 
-Tag image                           docker tag <image-id> <name><tag>      
-                                    docker tag c0c21e0808be rabbitmq:0.7
+## delete all unused images            
+docker rmi $(docker ps -q) 
+docker images -q |xargs docker rmi
 
-Compress image                      docker save -o <saving name> <image-name>:<tag>
-                                    docker save -o mq.tar rabbitmq:0.7
+## tag image                           
+docker tag <image-id> <name><tag>      
+docker tag c0c21e0808be rabbitmq:0.7
 
-Load compressed image               docker load -i <saved file>
-                                    docker load -i mq.tar
+## compress image                      
+docker save -o <saving name> <image-name>:<tag>
+docker save -o mq.tar rabbitmq:0.7
 
-
-# Containers
-
-Start container                     docker start <container-id>
-
-Stop container                      docker stop <container-id>
-
-Stop all containers                 docker stop $(docker ps -a -q)
-
-Restart container                   docker restart <container-id>
-
-List running container              docker ps
-
-List all containers                 docker ps -a
-
-Container logs                      docker logs <container-id>
-
-Tail container logs                 docker logs -f --tail 0 <container-id>
-                                    docker logs -f --tail 0 7d
-
-Login/connect to container          docker exec -it <container-id> bash
-
-Delete container                    docker rm <container-id> or docker rm -f <container-id>
-
-Delete all containers               docker rm $(docker ps -a -q)
-
-Delete stopped/exited containers    docker rm $(docker ps -a | grep Exited | awk '{print $1}')
-
-copy files container to host        docker cp <container-id>:<containers path> <host path> 
-                                    docker cp 34fe3333:/opt/docker/lam.txt . 
-
-find process id of container        docker inspect -f '{{.State.Pid}}' <container id>
+## load compressed image               
+docker load -i <saved file>
+docker load -i mq.tar
 
 
+# containers
 
-# Docker logs
+## start container                     
+docker start <container-id>
 
-Linux                               /var/log/docker.log
+## stop container                      
+docker stop <container-id>
 
-OSX (Inside boot2docker)            /var/log/docker.log
-                                    /var/log/boot2docker.log
+## stop all containers                 
+docker stop $(docker ps -a -q)
+
+## restart container                   
+docker restart <container-id>
+
+## list running container              
+docker ps
+
+## list all containers                 
+docker ps -a
+
+## container logs                      
+docker logs <container-id>
+
+## tail container logs                 
+docker logs -f --tail 0 <container-id>
+docker logs -f --tail 0 7d
+
+## login/connect to container          
+docker exec -it <container-id> bash
+
+## delete container                    
+docker rm <container-id> or docker rm -f <container-id>
+
+## delete all containers               
+docker rm $(docker ps -a -q)
+
+## delete stopped/exited containers    
+docker rm $(docker ps -a | grep Exited | awk '{print $1}')
+
+## copy files container to host        
+docker cp <container-id>:<containers path> <host path> 
+docker cp 34fe3333:/opt/docker/lam.txt . 
+
+## find process id of container        
+docker inspect -f '{{.State.Pid}}' <container id>
 
 
-# Container logs
+# docker logs
 
-Linux                               /var/lib/docker/containers/<container-id>/<container-id>.log
+## linux                                
+/var/log/docker.log
 
-OSX(Inside boot2docker)             /var/lib/docker/containers/<container-id>/<container-id>.log
+## osx (Inside boot2docker)            
+/var/log/docker.log
+/var/log/boot2docker.log
+
+## container log linux                               
+/var/lib/docker/containers/<container-id>/<container-id>.log
+
+## container log osx(Inside boot2docker)             
+/var/lib/docker/containers/<container-id>/<container-id>.log
+
+## remove running contaner log
+truncate -s 0 /var/lib/docker/containers/<containerid>/<containerid>-json.log
+
+
+# volumens
+
+## delete dangling volumes             
+docker volume rm $(docker volume ls -qf dangling=true)

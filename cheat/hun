@@ -1,0 +1,161 @@
+# paths
+
+## hun-sdk
+hun-sdk-v2
+    - Dockerfile
+    - docker-compose.yml
+    - README.md
+
+## chaincode
+solution-template/server/src/
+
+## javascript
+solution-template/server
+    - routes
+    - utils
+
+## config
+solution-template/server/config/config.json 
+solution-template/server/config/solutions.yaml // for node js
+solution-template/server/config/network_local_v1.1/artifacts // blockchain config
+
+
+## deploy services
+docker run -p 27017:27017 erangaeb/senzmongodb:0.1
+docker run --name redis -p 6379:6379 -d redis
+cd dokka/compose
+docker-compose up -d mongodb
+docker-compose up -d redis
+
+
+# deploy hun
+
+## start hun
+cd hun-sdk-v2
+docker-compose -f docker-compose-hcls-sdk.yaml up -d
+
+## setup
+docker exec -it hcls_sdk /bin/bash
+cd /opt
+./sandbox_setup.sh
+
+
+## deploy blockchain (use when change chaincode)
+cd /opt/sandbox/solution-template/scripts
+./restart.sh
+
+## run nodejs server (use when change js)
+cd /opt/sandbox/solution-template/server
+node server.js
+
+# build chaincode
+cd /opt/sandbox/solution-template/server/src/chaincode
+go build --tags nopkcs11
+
+
+# add new chaincode
+
+## new chaincode
+/opt/sandbox/solution-template/server/src/chaincode/solution_template/physician/physician.go
+    - add physician contract function
+
+## setup index
+/opt/sandbox/solution-template/server/src/chaincode/solution_template/solution_template.go
+    - add setup index funcation 
+
+## invoke
+/opt/sandbox/solution-template/server/src/chaincode/main.go
+    - add invoke physician funcations here(createPhysician, updatePhysician etc)
+
+
+# add javascript api
+
+## add router
+/opt/sandbox/solution-template/server/routes/rest_api.js
+    - add route function `createPhysician`
+    - define struct format on `data definitions` (swagger will show this format)
+
+## request handler
+/opt/sandbox/solution-template/server/utils/request_handler.js
+    - define api handler `createPhysicianApiHandler`
+    - add api handler in `process_api`
+
+## invoke chaincode
+/opt/sandbox/solution-template/server/utils/chaincode_ops.js
+    - define funcation to invoke chaincode `createPhysician`
+
+
+# govendor
+
+## install
+yum install git
+go get -u github.com/kardianos/govendor
+
+## install package
+cd /opt/sandbox/solution-template/server/src/chaincode
+govendor init
+govendor fetch github.com/go-redis/redis
+govendor fetch github.com/gocql/gocql
+govendor fetch gopkg.in/mgo.v2
+
+
+# swagger
+
+## change host
+/opt/sandbox/solution-template/server/config/config.json
+"swagger_host": "54.255.224.182:443"
+
+## disable cors
+/opt/sandbox/solution_template/server/server.js
+var corsOptionsDelegate = function (req, callback) {
+	let originHeader = req.header('Origin');
+	let hostHeader = req.header('Host');
+	if (typeof originHeader === "undefined") { // same-origin
+		callback(null, { origin: true })
+	} else if (url.parse(originHeader).host === hostHeader) { // same-origin
+		callback(null, { origin: true })
+	} else if (whitelist.indexOf(originHeader) !== -1) { // cross-origin whitelisted domain
+		callback(null, { origin: true })
+	} else { // cross-origin forbidden domain
+		//callback(new Error('Not allowed by CORS'), { origin: false })
+		callback(null, { origin: true })
+	}
+}
+
+## api
+https://localhost/api-docs/
+https://54.255.224.182/api-docs/
+
+## credential
+username - AppAdmin/Org1/mychannel
+username - AppAdmin/PeerOrg3/credential-ibm001-ch
+password - pass0
+
+
+## godoc
+http://localhost:6060/pkg/docs/common/
+
+# curl
+## physician api
+curl -k -XPOST 'http://54.255.224.182:7654/api/physician' \
+ --header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Basic QXBwQWRtaW4vT3JnMS9teWNoYW5uZWw6cGFzczA=' \
+--data '
+{
+  "messageType": "create",
+  "physician_id": "0115444",
+  "name": "eranga",
+  "dob": "10/19/1990",
+  "ssn": "424232-232-232",
+  "email": "dev@40ops.com",
+  "phone": "757219212",
+  "address": "108 blvd suffolk va - 23435",
+  "license_no": "452233",
+  "dae_no": "782323",
+  "npi_no": "99811",
+  "status": "pending"
+}
+'
+
+ 

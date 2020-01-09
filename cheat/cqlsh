@@ -1,0 +1,27 @@
+# connect
+cqlsh localhost 9042
+
+# connect with version
+cqlsh localhost 9042 --cqlversion 3.4.4
+
+# list keyspaces
+describe keyspaces;
+
+# select keyspace
+use mystiko;
+
+# list tables
+describe tables;
+
+# select all
+select * from documents;
+
+# select specific record
+select * from documents where id='999' AND company='rahasak';
+
+# select with limit
+select * from documents limit 10;
+select * from documents where id='999' AND company='rahasak' limit 1;
+
+# count
+SELECT COUNT(*) FROM documents;

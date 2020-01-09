@@ -1,0 +1,32 @@
+# install mongo client
+sudo apt install mongodb-clients
+
+# connect to local mongodb
+mongo
+
+# connect with host and port
+mongo --host 10.100.32.57:27017
+
+# list dbs
+show dbs
+
+# change db
+use senz 
+
+# list collections in db
+show collections
+
+# list entries in collection
+db.senzies.find({})
+
+# get entry from collection
+db.senzies.find({"name": "001011086021"})
+
+# remove all entries from collection
+db.senzies.remove({})
+
+# remove entry from collection
+db.senzies.remove("name": "rahasak")
+
+# count entries
+db.senzies.count()

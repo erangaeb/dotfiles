@@ -1,3 +1,9 @@
+# create pod/service/ingress
+kubectl create -f aplos-pod.yaml
+
+# update(apply changes) pod/servce/ingress
+kubectl apply -f aplos-pod.yaml
+
 # list all pods
 kubectl get pods
 

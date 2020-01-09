@@ -1,0 +1,56 @@
+# redis-cli with docker
+docker exec -it redis bash
+redis-cli
+
+# key size
+redis-cli DBSIZE
+
+# get all keys
+redis-cli KEYS *
+
+# delete all keys
+redis-cli FLUSHALL
+
+# set key
+redis-cli SET lamada 11
+> return OK
+
+# delete key
+redis-cli DEL lambda
+> return 1
+
+# set if not exists
+redis-cli SETNX lamada 11
+> return 1
+
+redis-cli SETNX lamada 11
+> return 0
+
+# get key
+redis-cli GET lamada
+> return 11
+
+# add value set
+SADD mystiko "t1"
+SADD mystiko "t2"
+SADD mystiko "t3"
+
+# get set values
+SMEMBERS mystiko
+
+# remove value from set
+SREM mystiko "t1"
+
+# remove all version from set
+
+---
+
+# config file
+/etc/redis/redis.conf
+
+# data directory
+dir /var/lib/redis
+
+# dbfilename
+dbfilename dump.rdb
+

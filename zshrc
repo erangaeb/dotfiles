@@ -47,7 +47,7 @@ ZSH_THEME="senzagnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(battery git docker)
+plugins=(git docker)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -122,3 +122,7 @@ export GOROOT=/usr/local/opt/go/libexec
 export GOPATH=$HOME/.go
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:$GOPATH/bin
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/eranga/.sdkman"
+[[ -s "/Users/eranga/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/eranga/.sdkman/bin/sdkman-init.sh"

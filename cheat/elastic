@@ -1,0 +1,176 @@
+# delete index
+curl -XDELETE 'http://18.136.120.100:9200/devices'
+
+# view cluster state
+curl -XGET http://localhost:9200/_cluster/state?pretty=true
+
+# view index
+curl -XGET http://localhost:9200/devices?pretty=true
+
+# search index
+curl -XGET http://localhost:9200/devices/_search?pretty=true
+
+# single bool match
+curl -XGET "http://localhost:9200/storage_document/_search?pretty=true" -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "term": {"auth_company_id": "pagero"}
+                }
+            ]
+        }
+    }
+}
+'
+
+curl -XGET "http://localhost:9200/vendors/_search?pretty=true" -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "term": {"oui": "112233"}
+                }
+            ]
+        }
+    }
+}
+'
+
+# multiple bool match
+curl -XGET "http://localhost:9200/storage_document/_search?pretty=true" -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "term": {"auth_company_id": "pagero"}
+                },
+                {
+                    "term": {"document_type": "ORDER"}
+                }
+            ]
+        }
+    }
+}
+'
+
+# nested match
+curl -XGET "http://localhost:9200/storage_document/_search?pretty=true" -d '
+{
+    "query": {
+        "nested": {
+            "path": "party_ids",
+            "query": {
+                "match": {"party_ids.value": "4444"}
+            }
+        }
+    }
+}
+'
+
+# combine bool match with nested match
+curl -XGET "http://localhost:9200/storage_document/_search?pretty=true" -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "match": {"auth_company_id": "pagero"}
+                },
+                {
+                    "match": {"document_type": "INVOICE"}
+                },
+                {
+                    "nested": {
+                        "path": "party_ids",
+                        "query": {
+                            "bool": {
+                                "must": [
+                                    {
+                                        "match": {"party_ids.id_type": "orgno"}
+                                    },
+                                    {
+                                        "match": {"party_ids.value": "2222"}
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+'
+
+
+# pagination
+curl -XGET "http://localhost:9200/storage_document/_search?pretty=true" -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "term": {"auth_company_id": "pagero"}
+                }
+            ]
+        }
+    },
+    "from" : 0, "size": 2
+}
+'
+
+
+# sort
+curl -XGET "http://localhost:9200/storage_document/_search?pretty=true" -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "term": {"auth_company_id": "pagero"}
+                }
+            ]
+        }
+    },
+    "sort": [
+        {"internal_interchange_id": "desc"}
+    ]
+}
+'
+
+
+# sort and pagination
+curl -XGET "http://localhost:9200/storage_document/_search?pretty=true" -d '
+{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "term": {"auth_company_id": "pagero"}
+                }
+            ]
+        }
+    },
+    "sort": [
+        {"internal_interchange_id": "desc"}
+    ],
+    "from" : 0, "size": 2
+}
+'
+
+# wildcard query
+
+curl -XGET "http://localhost:9200/transactions/_search?pretty=true" -d '
+{
+    "query": {
+        "query_string": {
+            "query": "*222",
+            "fields": ["digsig", "from_address", "to_address"]
+        }
+    }
+}
+'

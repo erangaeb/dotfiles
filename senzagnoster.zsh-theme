@@ -28,8 +28,8 @@
 CURRENT_BG='NONE'
 SEGMENT_SEPARATOR=''
 NEW_LINE='❯❯'
-LAMBDA='λ'
-LAMBDA_='𝝺'
+#LAMBDA='λ'
+LAMBDA='lambda.'
 
 # Begin a segment
 # Takes two arguments, background and foreground. Both can be omitted,

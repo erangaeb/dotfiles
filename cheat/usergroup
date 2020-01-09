@@ -1,0 +1,47 @@
+# list groups with id
+getent group
+
+# find group id
+getent group cassandra
+
+# delete group
+groupdel cassandra
+
+# add group
+groupadd cassandra
+
+# add group with id
+groupadd cassandra --gid=8761
+
+# find members in group
+vim /etc/group
+
+# list users ids
+getent passwd | cut -d: -f1,3
+
+# find user id
+id -u eranga
+
+# find user group id
+id -g eranga
+
+# find user and users group info
+id eranga 
+
+# create user 
+useradd cassandra
+
+# create user with id
+useradd -u 8751 cassandra
+
+# create user with specific group id
+useradd -u <userid> -g <groupid> <username>
+useradd -u 1000 -g 8751 cassandra
+
+# add user to existing group
+usermod -a -G <group> <user>
+usermod -a -G docker cassandra
+
+# change ownership of directory
+chown -R <username>:<groupname> <directory>
+chown -R cassandra:cassandra /private/var/services/octopus/elassandra

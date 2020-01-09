@@ -45,3 +45,6 @@ find . -type f -samefile MY_FILE_HERE 2>/dev/null
 
 # To find all files in the current directory and modify their permissions
 find . -type f -exec chmod 644 {} \;
+
+# Find with exclude paths
+find . -name "*.yaml" -and -not -path "./common/utils/node_modules/*" -and -not -path "./node_modules/*"
