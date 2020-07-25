@@ -63,6 +63,9 @@ docker logs -f --tail 0 7d
 ## login/connect to container          
 docker exec -it <container-id> bash
 
+## login/connect to container as root user
+docker exec -u 0 -it <container-id> bash
+
 ## delete container                    
 docker rm <container-id> or docker rm -f <container-id>
 

@@ -1,0 +1,17 @@
+# exec
+# execute a command that completely replaces the current process
+exec /opt/elassandra/bin/cassandra -e -f
+
+# & run backgound
+/usr/sbin/sshd -D &
+
+# run command with sudo echo password
+echo root | sudo -S /usr/sbin/sshd -D &
+
+# run command as differ user in shell script
+sudo -u <username> <command>
+echo root | sudo -u root /usr/sbin/sshd -D &
+
+# change password of a user
+RUN echo 'root:root' | chpasswd
+RUN echo "cassandra:cassandra" | chpasswd

@@ -13,5 +13,8 @@ keytool -delete -keystore server.truststore -alias 'pay2n'
 # Import key
 keytool -import -v -alias pay2n -file pay2n.crt -keystore server.truststore
 
+# Export key
+keytool -export -alias pay2n -file pay2n.cer -keystore server.truststore
+
 # Count no of certificates in the truststore
 keytool -list -keystore server.truststore | grep Certificate | wc -l

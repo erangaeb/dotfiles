@@ -1,0 +1,102 @@
+# Show hit for rules with auto refresh
+watch --interval 0 'iptables -nvL | grep -v "0     0"'
+
+# Show hit for rule with auto refresh and highlight any changes since the last refresh
+watch -d -n 2 iptables -nvL
+
+# Block the port 902 and we hide this port from nmap.
+iptables -A INPUT -i eth0 -p tcp --dport 902 -j REJECT --reject-with icmp-port-unreachable
+
+# Note, --reject-with accept:
+#	icmp-net-unreachable
+#	icmp-host-unreachable
+#	icmp-port-unreachable <- Hide a port to nmap
+#	icmp-proto-unreachable
+#	icmp-net-prohibited
+#	icmp-host-prohibited or
+#	icmp-admin-prohibited
+#	tcp-reset
+
+# Add a comment to a rule:
+iptables ... -m comment --comment "This rule is here for this reason"
+
+
+# To remove or insert a rule:
+# 1) Show all rules
+iptables -L INPUT --line-numbers
+# OR iptables -nL --line-numbers
+
+# Chain INPUT (policy ACCEPT)
+#     num  target prot opt source destination
+#     1    ACCEPT     udp  --  anywhere  anywhere             udp dpt:domain
+#     2    ACCEPT     tcp  --  anywhere  anywhere             tcp dpt:domain
+#     3    ACCEPT     udp  --  anywhere  anywhere             udp dpt:bootps
+#     4    ACCEPT     tcp  --  anywhere  anywhere             tcp dpt:bootps
+
+# 2.a) REMOVE (-D) a rule. (here an INPUT rule)
+iptables -D INPUT 2
+
+# 2.b) OR INSERT a rule.
+iptables -I INPUT {LINE_NUMBER} -i eth1 -p tcp --dport 21 -s 123.123.123.123 -j ACCEPT -m comment --comment "This rule is here for this reason"
+
+# install
+# 1. alpine
+# 2. ubuntu
+apk add iptables
+apt-get install iptables
+
+# route external ip address to localhost
+iptables -t nat -A OUTPUT -p all -d 172.17.0.1 -j DNAT --to-destination 127.0.0.1
+
+# redirect outbout traffic to another ip:port 
+iptables -t nat -A OUTPUT -p tcp --dport 8888 -j DNAT --to-destination 172.17.0.2:19042
+
+# list prerouting rules
+sudo iptables -t nat -v -L PREROUTING -n --line-number
+
+# list all rules
+sudo iptables -t nat -L -n --line-numbers
+
+# delete rule
+sudo iptables -t nat -D PREROUTING 1
+sudo iptables -t nat -D OUTPUT 1
+
+# delete all rules
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT
+
+sudo iptables -t nat -F
+sudo iptables -t mangle -F
+sudo iptables -F
+sudo iptables -X
+
+# more rules
+iptables -t nat -A OUTPUT -p all -d 172.17.0.1 -j DNAT --to-destination 127.0.0.1
+sudo iptables -t nat -A POSTROUTING -p tcp -d 192.168.202.105 --dport 80 -j SNAT --to-source 192.168.202.103
+iptables -t nat -A OUTPUT -p all -d 172.17.0.2 -j DNAT --to-destination 127.0.0.1
+
+# route with prerouting
+# not working
+echo "1" > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A PREROUTING -p tcp --dport 7199 -j DNAT --to-destination 172.17.0.3:17199
+iptables -t nat -A POSTROUTING -p tcp -d 172.17.0.3 --dport 17199 -j SNAT --to-source 172.17.0.3
+
+iptables -t nat -A PREROUTING -d 172.17.0.1 -p tcp --dport 8888 -j DNAT --to-destination 172.17.0.2
+iptables -t nat -A POSTROUTING -d 172.17.0.2 -p tcp --dport 19042 -j SNAT --to-source 172.17.0.1
+
+iptables -t nat -A PREROUTING -d 172.17.0.1 -p tcp --dport 8888 -j DNAT --to-destination 172.17.0.2:19042
+iptables -t nat -A POSTROUTING -s 172.17.0.2 -p tcp --sport 19042 -j SNAT --to-source 172.17.0.1:8888
+
+iptables -t nat -A PREROUTING -p tcp --dport 8888 -j DNAT --to-destination 172.17.0.2:19042
+iptables -t nat -A POSTROUTING -j MASQUERADE
+
+# route with output
+# working 
+# route outgoing traffic of port 9999 to  127.0.0.1:27299
+iptables -t nat -A OUTPUT -p tcp --dport 9999 -j DNAT --to-destination 127.0.0.1:27299
+
+# locally originated packets don't pass the PREROUTING chains
+# also, these packets pass only the INPUT/OUTPUT chains and never the FORWARD.
+# To redirect the local originated packets you should insert the DNAT/REDIRECT rule into the nat/OUTPUT chain
+iptables -t nat -A OUTPUT -p tcp --dst xxx.yyy.zzz.www --dport 80 -j DNAT --to-destination 127.0.0.1

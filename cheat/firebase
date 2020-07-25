@@ -22,14 +22,14 @@
 # test message android
 curl -X POST \
 --header "Content-Type: application/json" \
---header "Authorization: key=AAAAL664TjA:APA91bFpr7Gb4IUoTVlwBE34Y22l86JrQsim9-k3KV0eFmZVmJSmz7TE4HEpwWKGSOiHeNtIo-2nw0fCudzcjdoQL6o7NUBRFTDLDNkjG66enkm75xZ_Ow3eC0BqmaFWq5gQ0tfNyUiV" \
---data "{\"to\":\"fcfWOkea26I:APA91bG_uyPknCeBrc84A1FgzXXR_Z5Q9Bsu2q5GOXMEOaFHP7dBC4Nut4jcb0aJ5cMKl6bWEhrWtKDodzbSTd5lE4XuEpYv6hIfjQHCfQIfWUzEamw3_mzjkwvBcdfP8DpaxLUnBv6q\",\"data\":{\"data\":\"SHARE #LAT #LON @eranga ^switch digisg\"}}" \
+--header "Authorization: key=AAAAm27mFhI:APA91bH-z7hSEhS_RIa2-NI2tEEJZ-kQF9mErpRltGGNv7i0MJr2Knowvc-v_E1rekGWKITw_yTJwiKUKQMfNAl9EAqShGyWK_XuP2XQxQ-HUO4MLdcdGa6DJHdyYa0yLn1sbryKzxk-" \
+--data "{\"to\":\"cr1ki5Foli0:APA91bHLFbxTSolxO4Rn4ezRC_3A7L4TgNFFHwjMJknsljSusDzZ3cvIKEYR2HOjNFqMbRCPOW2Al6YDvx2EZ_ojQcpp6BhdVXq84SO02fIWeSUR11r2Fb1tYYFD7aj4OgEAJIJvpekt\",\"data\":{\"data\":\"SHARE #LAT #LON @eranga ^switch digisg\"}}" \
 https://fcm.googleapis.com/fcm/send
 
 
 # test message ios
 curl -X POST \
 --header "Content-Type: application/json" \
---header "Authorization: key=AAAAL664TjA:APA91bFpr7Gb4IUoTVlwBE34Y22l86JrQsim9-k3KV0eFmZVmJSmz7TE4HEpwWKGSOiHeNtIo-2nw0fCudzcjdoQL6o7NUBRFTDLDNkjG66enkm75xZ_Ow3eC0BqmaFWq5gQ0tfNyUiV" \
+--header "Authorization: key=AAAAm27mFhI:APA91bH-z7hSEhS_RIa2-NI2tEEJZ-kQF9mErpRltGGNv7i0MJr2Knowvc-v_E1rekGWKITw_yTJwiKUKQMfNAl9EAqShGyWK_XuP2XQxQ-HUO4MLdcdGa6DJHdyYa0yLn1sbryKzxk-" \
 --data "{\"to\":\"cDq7DaMKIhg:APA91bH7xDbtDypTajmBBO3Qb_AB3mwuFmJBAWKMvS_1KCAgT9fupABSHe9QnBXCPR2BKGFAFOutJLuuNiZr0NPEDS7awbqNni_VqAKawIUikOhNgFo0PyHpR0U21M1TjGIUqp-WUWna\",\"content_available\":true,\"notification\":{\"title\":\"New Document\",\"documentId\":\"3422323\", \"body\": \"New document received to sign\"}}" \
 https://fcm.googleapis.com/fcm/send

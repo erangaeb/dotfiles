@@ -1,0 +1,66 @@
+# install
+apk add redsocks
+
+# config
+redsocks {
+    // redsocks listening port
+    local_ip = 127.0.0.1;
+    local_port = 12345;
+
+    // socks proxy 
+    ip = 127.0.0.1;
+    port = 9999;
+
+    type = socks5;
+}
+
+
+# iptables
+
+iptables -t nat -N REDSOCKS
+
+sudo iptables -t nat -N REDSOCKS
+sudo iptables -t nat -A REDSOCKS -d 240.0.0.0/4 -j RETURN
+sudo iptables -t nat -A REDSOCKS -d 0.0.0.0/8 -j RETURN
+sudo iptables -t nat -I REDSOCKS -d 172.17.0.1 -j RETURN
+sudo iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345
+sudo iptables -t nat -A OUTPUT -p tcp --dport 7199 -j REDSOCKS
+sudo iptables -t nat -A PREROUTING -p tcp --dport 7199 -j REDSOCKS
+sudo iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner cassandra -j REDSOCKS
+
+ssh -4 -oStrictHostKeyChecking=no -vfN -D 9999 cassandra@172.17.0.1
+
+---
+
+sudo iptables -t nat -N REDSOCKS
+
+# ignore redsocks for this address
+sudo iptables -t nat -I REDSOCKS -d 172.17.0.1 -j RETURN
+
+# redirect packets from redsock to port 12345
+sudo iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345
+
+# redirect packets going to 7199 to redsocks chain
+sudo iptables -t nat -A OUTPUT -p tcp --dport 7199 -j REDSOCKS
+
+# redirect only packets coming from cassandra user to redsocks, otherwise it
+# will causes a loop(redirects traffic from redsocks back to redsocks itself)
+sudo iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner cassandra -j REDSOCKS
+
+ssh -4 -oStrictHostKeyChecking=no -vfN -D 9999 cassandra@172.17.0.1
+
+---
+
+sudo iptables -t nat -N REDSOCKS
+
+# redirect packets from redsock to port 12345
+sudo iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345
+
+# redirect packets going to 7199 to redsocks chain
+sudo iptables -t nat -A OUTPUT -p tcp --dport 7199 -j REDSOCKS
+
+# redirect only packets coming from cassandra user to redsocks, otherwise it
+# will causes a loop(redirects traffic from redsocks back to redsocks itself)
+sudo iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner cassandra -j REDSOCKS
+
+ssh -4 -oStrictHostKeyChecking=no -vfN -D 9999 cassandra@172.17.0.1

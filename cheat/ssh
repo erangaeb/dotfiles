@@ -50,3 +50,28 @@ emacs /ssh:name@server:/path/to/file
 ssh -L localhost:8888:10.15.0.7:5601 blockchainadmin@13.68.200.250
 ssh -L localhost:8888:localhost:5601 blockchainadmin@13.68.200.250
 ssh -L localhost:8888:10.15.0.9:9092 blockchainadmin@138.91.114.18
+
+# port forwarding with docker
+# in docker localhost for the remotehost local ip may not work
+ssh -L localhost:8888:172.17.0.1:9042 root@13.68.200.250 -p 9022
+ssh -L localhost:8888:172.17.0.1:9042 root@localhost -p 9022
+ssh -L localhost:8888:elassandra1:9042 root@elassandra1 -p 22
+
+# ignore host key verification
+ssh -oStrictHostKeyChecking=no -L localhost:8888:172.17.0.1:9042 root@localhost -p 9022
+
+# automatically give ssh password
+psswd="root"
+sshpass -p $psswd ssh -oStrictHostKeyChecking=no -L localhost:8888:172.17.0.1:9042 root@localhost -p 9022
+sshpass -p root ssh -oStrictHostKeyChecking=no -L localhost:8888:172.17.0.1:9042 root@localhost -p 9022
+
+# port forwarding in docker
+# -4 use IPV4 address
+# -f requests ssh to go to background
+# -N short remote sleep command
+sshpass -p root ssh -4 -oStrictHostKeyChecking=no -fN -L localhost:7199:elassandra1:7199 root@elassandra1
+sshpass -p root ssh -4 -oStrictHostKeyChecking=no -L localhost:8888:elassandra1:9042 root@elassandra1
+
+# sometimes using hostname is not working, so use ip address
+sshpass -p root ssh -4 -oStrictHostKeyChecking=no -fN -L localhost:17199:172.17.0.1:7199 root@172.17.0.1
+sshpass -p root ssh -4 -oStrictHostKeyChecking=no -fN -L localhost:8881:172.17.0.1:9042 root@172.17.0.1

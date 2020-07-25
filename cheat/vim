@@ -38,6 +38,10 @@ o                               Insert line below
 u, <ctrl> r                     Undo, Redo
 <fn> F2 (F2)                    Insert paste (use when paste a code block)
 y, p                            Yank, Paste
+%s/<term>//g                    Delete all occurence of term
+%s/<term>//gc                   Delete all occurence of term, ask confirmation
+:%s/<searc>/<replace>/g         Search, replace without confirm 
+:%s/<searc>/<replace>/gc        Search, replace ask confirm
 
 
 # Selection

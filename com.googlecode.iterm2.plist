@@ -2535,9 +2535,9 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 126 606 469 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>261 120 796 473 0 0 1440 877 </string>
+	<string>364 166 796 473 0 0 1440 877 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
-	<string>243 293 592 584 0 0 1440 877 </string>
+	<string>830 293 592 584 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>0 0 1440 877 0 0 1440 877 </string>
 	<key>NeverWarnAboutShortLivedSessions_D66F77F2-6E55-41A9-BE0A-AC249D889F1E</key>
@@ -6359,7 +6359,7 @@
 	<key>WindowStyle</key>
 	<integer>0</integer>
 	<key>WordCharacters</key>
-	<string>/-+\~_.</string>
+	<string>m </string>
 	<key>findIgnoreCase_iTerm</key>
 	<true/>
 	<key>findRegex_iTerm</key>

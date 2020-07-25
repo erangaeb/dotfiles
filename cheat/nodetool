@@ -1,0 +1,14 @@
+# cluster status
+/opt/elassandra/bin/nodetool status
+
+# with host port
+/opt/elassandra/bin/nodetool -h localhost -p 7299 status
+
+# with auth
+/opt/elassandra/bin/nodetool -h localhost -p 7299 -u reaperUser -pw reaperPass status
+
+# with auth and ssl
+/opt/elassandra/bin/nodetool --ssl -h localhost -p 7199 -u reaperUser -pw reaperPass status
+
+# remove node
+/opt/elassandra/bin/nodetool -h localhost -p 7199 -u reaperUser -pw reaperPass removenode d9efdd0c-8af6-4898-be48-cfc70c153eaf

@@ -1,0 +1,11 @@
+# run meta sploit with services in kaly linux
+docker run --rm -it tleemcjr/metasploitable2:latest sh -c "/bin/services.sh && bash"
+
+# run metasploit
+docker run --rm -it sauravbrahma/metasploit_image:latest bash
+
+# start msfconsole
+msfconsole
+
+# attackes
+https://www.offensive-security.com/metasploit-unleashed/scanner-http-auxiliary-modules/

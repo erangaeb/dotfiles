@@ -123,6 +123,9 @@ export GOPATH=$HOME/.go
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:$GOPATH/bin
 
+# python
+alias python='python3'
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/eranga/.sdkman"
 [[ -s "/Users/eranga/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/eranga/.sdkman/bin/sdkman-init.sh"

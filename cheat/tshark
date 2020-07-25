@@ -1,0 +1,113 @@
+# basic info
+
+# install
+sudo apt-get install tshark
+
+# help
+sudo tshark -h
+
+# show network interfaces
+sudo tshark -D
+
+
+
+
+
+# capture packets
+
+# capture all packets on default network interface
+sudo tshark
+
+# capture all packets on specific network interface
+# -i ens4 (ens4 interface)
+sudo tshark -i ens4
+
+# capture packets with disable name resolutions (e.g hostname, tcp udp port names), it would be good for peformance 
+# -nn (disable name resolutions)
+sudo tshark -nn -i ens4
+
+# capture all tcp packets on port 7654 
+sudo tshark -nn -i ens4 'tcp port 7654'
+
+# capture all udp packets on port 7654
+sudo tshark -nn -i ens4 'udp port 7654'
+
+# capture only incoming packets on port 7654
+sudo tshark -nn -i ens4 'dst port 7654'
+
+# capture packets on port 7654 which comes to ip 10.128.0.3
+sudo tshark -nn -i ens4 'tcp port 7654 and ip dst 10.128.0.3'
+
+# capture all packets on tcp port 7654 and display more details of http packets
+# -O http (show more packet details of specific protocol)
+sudo tshark -nn -i ens4 -O http 'tcp port 7654'
+
+# capture only http traffic comes to port 7654
+# -Y http (capture only http traffic)
+sudo tshark -nn -i ens4 -Y http 'dst port 7654'
+# show all fields that can be captured
+sudo tshark -G fields | less
+
+
+
+
+
+# capture fields
+
+# capture ip related fields - layer 3
+# -T fields (capturing fields)
+# -e (capturing field name)
+sudo tshark -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len 'dst port 7654'
+
+# capture ethernet related fields(e.g. mac address) - layer 2
+sudo tshark -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len -e eth.src -e eth.dst 'dst port 7654'
+
+# capture tcp related fields - layer 4
+sudo tshark -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len -e eth.src -e eth.dst -e tcp.srcport -e tcp.dstport -e tcp.seq -e tcp.ack -e tcp.flags.str -e tcp.flags -e tcp.analysis.acks_frame 'dst port 7654'
+
+# capture frame(packet header) related fields
+sudo tshark -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len -e eth.src -e eth.dst -e tcp.srcport -e tcp.dstport -e tcp.seq -e tcp.ack -e tcp.flags.str -e tcp.flags -e tcp.analysis.acks_frame -e frame.number -e frame.time_epoch -e frame.len -e frame.protocols -e frame.time 'dst port 7654'
+
+
+
+
+
+# write to file
+
+# write packets to 'dump.pcap' file
+sudo tshark -nn -w dump.pcap -i ens4
+
+# write packets on port 7654 and ens4 interface to 'dump.pcap' file
+sudo tshark -w dump.pcap -i ens4 'tcp port 7654'
+
+# write to 'dump.pcap' with fields
+sudo tshark -w dump.pcap -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len -e eth.src -e eth.dst -e tcp.srcport -e tcp.dstport -e tcp.seq -e tcp.ack -e tcp.flags.str -e tcp.flags -e tcp.analysis.acks_frame -e frame.number -e frame.time_epoch -e frame.len -e frame.protocols -e frame.time 'dst port 7654'
+
+
+
+
+
+# read from file
+
+# read from 'dump.pcap' file
+sudo tshark -r dump.pcap
+
+# read fields from 'dump.pcap' file
+sudo tshark -r dump.pcap -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len -e eth.src -e eth.dst -e tcp.srcport -e tcp.dstport -e tcp.seq -e tcp.ack -e tcp.flags.str -e tcp.flags -e tcp.analysis.acks_frame -e frame.number -e frame.time_epoch -e frame.len -e frame.protocols -e frame.time
+
+# read 'dump.pcap' file and write to 'output.csv' file
+# -E header=y (print csv header line)
+# -E quote=n (not include the data in quotes)
+# -E occurrence=f (use only the first occurrence for fields)
+sudo tshark -r dump.pcap -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len -e eth.src -e eth.dst -e tcp.srcport -e tcp.dstport -e tcp.seq -e tcp.ack -e tcp.flags.str -e tcp.flags -e tcp.analysis.acks_frame -e frame.number -e frame.time_epoch -e frame.len -e frame.protocols -e frame.time -E header=y -E separator=, -E quote=n -E occurrence=f > output.csv
+
+
+
+
+# examples
+
+# packet capture in gcp
+sudo tshark -w dump.pcap -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len -e eth.src -e eth.dst -e tcp.srcport -e tcp.dstport -e frame.time_epoch -e frame.len -e frame.protocols -e frame.time 'dst port 7654'
+
+# read to csv file
+sudo tshark -r dump.pcap -nn -i ens4 -T fields -e ip.src -e ip.dst -e ip.len -e eth.src -e eth.dst -e tcp.srcport -e tcp.dstport -e frame.time_epoch -e frame.len -e frame.protocols -e frame.time -E header=y -E separator='|' -E quote=n -E occurrence=f > output.csv

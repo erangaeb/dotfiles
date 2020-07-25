@@ -74,3 +74,33 @@ SDB@@##123
 10.100.32.57            Switch/Trans/Inq
 10.100.32.58            Web/Dashboard
 10.100.32.59            Elastic/Kibana
+
+# web
+sdbladmin
+sdbladmin
+
+
+# mbsl
+## vpn
+ip - 220.247.217.220
+username - ucsc_uat
+passowrd - Yv7Qg92b
+
+## ssh test
+ssh mbsl@10.1.1.135 // uatpromize.mbsl.lk
+ssh mbsl@10.1.1.136 // monitor
+password - Promize 
+
+# ssh prod
+ssh promizeuser@10.1.1.185 // promize.mbsl.lk
+ssh promizeuser@10.1.1.186
+ssh promizeuser@10.1.1.187 // monitor
+password - #Pr0m1@z3
+
+
+
+# lekana ucsc
+ssh 'lek@192.248.22.198'
+
+ssh lek@192.248.22.198
+Tsunamianakel@$20041226

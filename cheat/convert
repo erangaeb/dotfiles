@@ -25,3 +25,9 @@ convert search-throughput.png search-throughput.eps
 
 ## reduce size with eps3#
 convert search-throughput.png eps3:search-throughput.eps
+
+# convert to gray scale
+convert source.png -colorspace Gray out.png
+
+# convert to true black and white
+convert source.png -monochrome out.png

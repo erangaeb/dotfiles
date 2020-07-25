@@ -1,0 +1,19 @@
+# generate pdf from latex
+# bibtex add citation to paper
+pdflatex main.tex
+bibtex main.aux
+pdflatex main.tex
+pdflatex main.tex
+
+# generate dvi from latex
+# bibtex add citation to paper
+latex main.tex
+bibtex main.aux
+latex main.tex
+latex main.tex
+
+# get .bbl reference file
+download from overleaf log output
+
+# get .dvi
+download from overleaf logoutpud
