@@ -31,3 +31,6 @@ convert source.png -colorspace Gray out.png
 
 # convert to true black and white
 convert source.png -monochrome out.png
+
+# resize reduce size
+convert -resize 25% source.png lekana.png

@@ -1,0 +1,15 @@
+# list
+grpcurl -plaintext -v localhost:9000 list
+
+# list methods in service
+grpcurl -plaintext -v localhost:9000 list
+
+# describe
+grpcurl -plaintext -v localhost:9000 describe MessageService
+
+grpcurl -plaintext -v localhost:9000 describe MessageService.SendMessage
+
+# requests
+grpcurl -plaintext -d '{"id": "121", "body": "ops message"}' localhost:9000 MessageService/SendMessage
+grpcurl -plaintext -d '{"id": "121", "body": "ops message"}' localhost:9000 MessageService/StreamMessage
+grpcurl -plaintext -d '{"id": "121", "body": "ops message"}' localhost:9000 MessageService/ServeMessage

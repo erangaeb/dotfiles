@@ -1,0 +1,17 @@
+# set timezone linux
+
+# list timezones
+timedatectl list-timezones
+
+# set timezone linux
+sudo timedatectl set-timezone Asia/Colombo
+
+
+# set timezone docker
+
+# install tzdata
+RUN apt-get update -y
+RUN apt-get install -y tzdata
+
+# set TZ env variable on docker container
+docker run --rm -e TZ=Europe/Bucharest -it <image name>
