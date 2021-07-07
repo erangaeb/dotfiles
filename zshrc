@@ -85,12 +85,12 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export JAVA_HOME=$(/usr/libexec/java_home)
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-# set up andoird home
+# set up android home
 export ANDROID_HOME=/Users/eranga/Public/installations/android-sdk
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-# set up andoird NDK
+# set up android NDK
 export NDK_ROOT=/Users/eranga/Public/installations/android-ndk-r13b
 export NDK_HOME=/Users/eranga/Public/installations/android-ndk-r13b
 export PATH=$PATH:$NDK_HOME
